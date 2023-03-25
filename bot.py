@@ -1,6 +1,7 @@
+from keep_alive import keep_alive
 import openai
 
-openai.api_key = "your api key"
+openai.api_key = "your API"
 
 
 def respond(message):
@@ -21,17 +22,26 @@ def respond(message):
 import telepot
 
 # Set API key Telegram Bot
-bot = telepot.Bot("your api key")
+bot = telepot.Bot("your API")
 
 
 def handle(msg):
   content_type, chat_type, chat_id = telepot.glance(msg)
   if content_type == 'text':
     message = msg['text']
-    if message.startswith("/ask"):
+    if message == "/start":
+      bot.sendMessage(
+        chat_id,
+        "Halloi, gunakan format:\n" \
+        "🔶 Format: '/ask perintah'\n" \
+        "🔶 Contoh: '/ask apa kabar?'"
+      )
+    elif message.startswith("/ask"):
       response = respond(message[5:])
       bot.sendMessage(chat_id, response)
 
 
 bot.message_loop(handle)
 
+# Jalankan server agar aplikasi terus berjalan di repl.it
+keep_alive()
